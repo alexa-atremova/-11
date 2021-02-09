@@ -5,7 +5,7 @@ namespace App\Model;
 use App\Exception\ValidationException;
 use App\Traits\DB;
 
-class User
+class User extends Model
 {
     use DB;
 
@@ -32,22 +32,7 @@ class User
         $this->createdAt = new \DateTime();
     }
 
-    public static function findAll()
-    {
-        $db = self::getDb();
-        $stm = $db->query('SELECT * FROM ' . static::TABLE);
-        return $stm->fetchAll(\PDO::FETCH_ASSOC);
-    }
 
-
-    public static function findById(int $id): array
-    {
-        $db = self::getDb();
-        $stm = $db->prepare('SELECT * FROM users WHERE id = ?');
-        $stm->execute([$id]);
-        $result = $stm->fetch(\PDO::FETCH_ASSOC);
-        return $result ? $result : [];
-    }
 
     public static function findByEmail(string $email)
     {
@@ -80,12 +65,7 @@ class User
     }
 
 
-    public static function remove(int $id)
-    {
-        $db = self::getDb();
-        $stm = $db->prepare('DELETE FROM users WHERE id = ?');
-        $stm->execute([$id]);
-    }
+
 
     public function getName(): string
     {

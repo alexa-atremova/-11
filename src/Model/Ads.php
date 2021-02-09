@@ -5,7 +5,7 @@ namespace App\Model;
 use App\Exception\ValidationException;
 use App\Traits\DB;
 
-class Ads
+class Ads extends Model
 {
     use DB;
 
@@ -24,12 +24,6 @@ class Ads
 
     }
 
-    public static function findAll()
-    {
-        $db = self::getDb();
-        $stm = $db->query('SELECT * FROM ' . static::TABLE);
-        return $stm->fetchAll(\PDO::FETCH_ASSOC);
-    }
 
 
     public static function findByTitle(string $title)
@@ -60,12 +54,7 @@ class Ads
         ]);
     }
 
-    public static function remove(string $title)
-    {
-        $db = self::getDb();
-        $stm = $db->prepare('DELETE FROM ads WHERE title = ?');
-        $stm->execute([$title]);
-    }
+
 
     public function getTitle(): string
     {
