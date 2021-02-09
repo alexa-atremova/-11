@@ -10,14 +10,14 @@
             <h1 style="margin: 20px 0;">Ads create</h1>
             <?php foreach ($comments as $comment) { ?>
                 <div class="jumbotron">
-
+                    <h3 style="margin-left: 80%" class="text-muted">id_№<?= $comment['id'];?></h3>
                     <h1 class="display-4"><?= $comment['title']; ?></h1>
                     <p class="lead"><?= $comment['comments']; ?></p>
 
                     <hr class="my-4">
                     <p class="lead">
-                        <a class="btn btn-primary btn-lg" href="/ads/edit?title=<?= $comment['title'];?>" role="button">Edit</a>
-                        <a class="btn btn-primary btn-lg" href="/ads/delete?title=<?= $comment['title'];?>" role="button">Delete</a>
+                        <a class="btn btn-primary btn-lg" href="/ads/edit?title=<?= $comment['id'];?>" role="button">Edit</a>
+                        <a class="btn btn-primary btn-lg" href="/ads/delete?title=<?= $comment['id'];?>" role="button">Delete</a>
                     </p>
 
                 </div>
