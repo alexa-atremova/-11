@@ -15,5 +15,7 @@ $autoloader->register();
 
 require __DIR__ . '/../helpers.php';
 
+
 $router = new Router();
 $router->process();
+

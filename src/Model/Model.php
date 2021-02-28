@@ -4,33 +4,47 @@
 namespace App\Model;
 
 
-use App\Traits\DB;
+use App\Utils\Config;
+use PDO;
+use PDOException;
 
 abstract class Model
 {
-    use DB;
 
-    public static function findAll()
+    protected static PDO $db;
+    protected string $table;
+
+    public function __construct(string $table)
     {
-        $db = self::getDb();
-        $stm = $db->query('SELECT * FROM ' . static::TABLE);
-        return $stm->fetchAll(\PDO::FETCH_ASSOC);
+        $this->table = $table;
+        self::$db = $this->db();
     }
 
-    public static function findById(int $id): array
+    public function getAll(): array
     {
-        $db = self::getDb();
-        $stm = $db->prepare('SELECT * FROM ' . static::TABLE . ' WHERE id = ?');
-        $stm->execute([$id]);
-        $result = $stm->fetch(\PDO::FETCH_ASSOC);
-        return $result ? $result : [];
+        $stm = $this->db()->query('SELECT * FROM ' . $this->table);
+        return $stm->fetchAll(PDO::FETCH_ASSOC) ?: [];
     }
 
-    public static function remove(int $id)
+    public function remove(int $id): void
     {
-        $db = self::getDb();
-        $stm = $db->prepare('DELETE FROM ' . static::TABLE . ' WHERE id = ?');
+        $sql = sprintf('DELETE FROM %s WHERE id = ?', $this->table);
+        $stm = $this->db()->prepare($sql);
         $stm->execute([$id]);
     }
 
+    public function db(): PDO
+    {
+        if (!isset(self::$db)) {
+            try {
+                $dsn = sprintf('mysql:host=%s;dbname=%s', Config::get('DB_HOST'), Config::get('DB_NAME'));
+                self::$db = new PDO($dsn, Config::get('DBUSER'), Config::get('DB_PASS'));
+                self::$db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+            } catch (PDOException $exception) {
+                exit('Connection to database failed');
+            }
+        }
+
+        return self::$db;
+    }
 }
