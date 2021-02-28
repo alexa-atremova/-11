@@ -1,6 +1,7 @@
 <?php
 
 use App\Utils\Router;
+use App\Utils\Config;
 
 session_start();
 ini_set('display_errors', 1);
@@ -14,6 +15,8 @@ $autoloader->addNamespace('App', __DIR__ . '/../src');
 $autoloader->register();
 
 require __DIR__ . '/../helpers.php';
+Config::get('DB_USER');
+//exit;
 
 
 $router = new Router();

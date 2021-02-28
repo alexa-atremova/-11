@@ -38,7 +38,7 @@ abstract class Model
         if (!isset(self::$db)) {
             try {
                 $dsn = sprintf('mysql:host=%s;dbname=%s', Config::get('DB_HOST'), Config::get('DB_NAME'));
-                self::$db = new PDO($dsn, Config::get('DBUSER'), Config::get('DB_PASS'));
+                self::$db = new PDO($dsn, Config::get('DB_USER'), Config::get('DB_PASS'));
                 self::$db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
             } catch (PDOException $exception) {
                 exit('Connection to database failed');
